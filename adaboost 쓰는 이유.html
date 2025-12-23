@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdaBoost vs LightGBM/XGBoost</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap");
+      body {
+        font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+        word-break: keep-all;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 min-h-screen p-4 md:p-8">
+    <div
+      class="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden"
+    >
+      <!-- Header -->
+      <div class="bg-slate-800 text-white p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold mb-2">
+          AdaBoost의 현실적인 위치
+        </h1>
+        <p class="text-slate-300">왜 아직도 교과서에 나오는가?</p>
+      </div>
+
+      <!-- Intro -->
+      <div class="p-6 md:p-8 border-b border-gray-200">
+        <p class="text-lg leading-relaxed mb-4">
+          현실적인 데이터 분석이나 대회(Kaggle 등)에서는
+          <strong>AdaBoost</strong>를 거의 쓰지 않습니다.<br />
+          냉정하게 말해 <strong>LightGBM</strong>이나 <strong>XGBoost</strong>가
+          속도, 정확도, 유연성 모든 면에서 압도적으로 좋기 때문입니다.
+        </p>
+        <p class="text-gray-600">
+          그럼에도 불구하고 AdaBoost가 아직 교과서에 나오고, 가끔 사용되는
+          이유는 딱 <strong>3가지 틈새시장</strong> 때문입니다.
+        </p>
+      </div>
+
+      <!-- Main Content -->
+      <div class="p-6 md:p-8 space-y-8">
+        <!-- Point 1 -->
+        <section>
+          <h2 class="text-xl font-bold text-blue-700 mb-3">
+            1. "참새 잡는데 대포 쏠 필요 없다" (데이터가 아주 작을 때)
+          </h2>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-4 rounded border border-gray-200">
+              <h3 class="font-bold text-gray-700 mb-2">
+                🚛 LightGBM / XGBoost
+              </h3>
+              <p class="text-sm text-gray-600">
+                수천, 수만 개의 데이터를 처리하기 위해 설계된
+                <strong>'대형 트럭'</strong>입니다. 데이터가 50개~100개밖에 없는
+                초소형 데이터셋에 이걸 돌리면, 엔진 예열(초기 설정)하다가
+                끝납니다. 게다가 모델이 너무 복잡해서 데이터를 억지로
+                외워버리는(과적합) 사고가 터지기 쉽습니다.
+              </p>
+            </div>
+            <div class="bg-blue-50 p-4 rounded border border-blue-200">
+              <h3 class="font-bold text-blue-800 mb-2">🚲 AdaBoost</h3>
+              <p class="text-sm text-blue-800">
+                <strong>'자전거'</strong>입니다. 구조가 단순해서 데이터가 아주
+                적을 때 오히려 더 안정적이고, 튜닝할 것도 별로 없어서 슥
+                돌려보기 편합니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Point 2 -->
+        <section>
+          <h2 class="text-xl font-bold text-blue-700 mb-3">
+            2. 설정이 귀찮을 때 (Baseline 모델)
+          </h2>
+          <div class="space-y-3">
+            <div class="flex flex-col md:flex-row gap-4 items-start">
+              <div class="flex-1">
+                <span class="font-bold text-gray-700 block mb-1"
+                  >🛠 XGBoost / LightGBM</span
+                >
+                <p class="text-sm text-gray-600">
+                  성능을 제대로 뽑으려면 <code>learning_rate</code>,
+                  <code>max_depth</code>, <code>colsample_bytree</code>,
+                  <code>reg_alpha</code> 등 조절해야 할 나사가 수십 개입니다.
+                </p>
+              </div>
+            </div>
+            <div
+              class="flex flex-col md:flex-row gap-4 items-start bg-blue-50 p-3 rounded"
+            >
+              <div class="flex-1">
+                <span class="font-bold text-blue-800 block mb-1"
+                  >⚡ AdaBoost</span
+                >
+                <p class="text-sm text-blue-800">
+                  그냥 <code>n_estimators</code>(반복 횟수)만 대충 정해줘도 자기
+                  성능의 90% 이상을 바로 보여줍니다. "이 데이터가 머신러닝이
+                  먹히긴 하는 데이터인가?"를 빠르게 간 볼 때 유용합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Point 3 -->
+        <section>
+          <h2 class="text-xl font-bold text-blue-700 mb-3">
+            3. "왜 틀렸는지" 설명하기 쉬움 (해석력)
+          </h2>
+          <p class="mb-3 text-gray-700">
+            요즘 모델들은 성능은 좋지만 내부가 너무 복잡해서(Black Box), "왜
+            비둘기가 빵을 먹는다고 예측했어?"라고 물으면 설명하기가 난해합니다.
+          </p>
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <p class="text-sm text-yellow-800">
+              <strong>AdaBoost</strong>는 보통 깊이가 1인 아주 단순한
+              나무(Stump)를 합치는 방식이라, <br />
+              <strong
+                >"이 변수 하나 때문에 가중치가 이렇게 변해서 결과가
+                나왔다"</strong
+              >고 사람이 이해하기 쉽게 설명하기가 상대적으로 수월합니다.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Summary -->
+      <div class="bg-gray-800 text-white p-6 md:p-8">
+        <h2
+          class="text-lg font-bold text-yellow-400 mb-4 border-b border-gray-600 pb-2"
+        >
+          3줄 요약
+        </h2>
+        <ul class="space-y-2">
+          <li class="flex items-start">
+            <span class="text-yellow-400 mr-2">1.</span>
+            <span
+              ><strong>성능/속도 끝판왕을 원하면:</strong> 무조건 LightGBM이나
+              XGBoost를 쓰는 게 맞습니다. (현업 99%)</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-yellow-400 mr-2">2.</span>
+            <span
+              ><strong>데이터가 너무 작고 귀여우면:</strong> AdaBoost가 더
+              안전할 수 있습니다.</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-yellow-400 mr-2">3.</span>
+            <span
+              ><strong>공부 목적:</strong> 최신 부스팅 모델들의 '조상님'이라서
+              원리를 이해하려고 배웁니다.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
